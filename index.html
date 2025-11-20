@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HotBite — Fast Food</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1724; /* dark navy */
+      --card:#0b1220;
+      --accent:#ff6b35; /* orange */
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.04);
+      --radius:14px;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:linear-gradient(180deg,var(--bg),#071024); color:#e6eef8; -webkit-font-smoothing:antialiased}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#ffb199);display:flex;align-items:center;justify-content:center;font-weight:700;color:#081021}
+    nav{display:flex;gap:12px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px}
+    nav a:hover{color:#fff;background:var(--glass)}
+
+    .container{max-width:1200px;margin:22px auto;padding:0 18px}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:center;margin-bottom:22px}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:28px;border-radius:20px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+    .hero h1{margin:0;font-size:34px;line-height:1.05}
+    .hero p{color:var(--muted);margin-top:10px}
+    .cta{display:flex;gap:12px;margin-top:18px}
+    .btn{background:var(--accent);border:none;padding:11px 16px;border-radius:12px;color:#081021;font-weight:700;cursor:pointer}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff}
+
+    /* Menu grid */
+    .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:22px}
+    .card{background:var(--card);border-radius:16px;padding:16px;box-shadow:inset 0 -2px 0 rgba(255,255,255,0.02)}
+    .item-img{width:100%;height:160px;border-radius:12px;object-fit:cover;margin-bottom:12px}
+    .item-meta{display:flex;justify-content:space-between;align-items:center}
+    .price{font-weight:700}
+    .tag{background:#102131;padding:6px 8px;border-radius:10px;font-size:12px;color:var(--muted)}
+
+    
+    .cart{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:18px;border-radius:16px;position:sticky;top:20px}
+    .cart h3{margin-top:0}
+    .cart-list{max-height:300px;overflow:auto;margin-bottom:12px}
+    .cart-row{display:flex;justify-content:space-between;gap:8px;padding:8px 6px;border-radius:8px}
+    .small{font-size:13px;color:var(--muted)}
+
+    
+    .contact{display:flex;gap:18px;margin-top:22px}
+    .form input,.form textarea{width:100%;padding:10px;border-radius:8px;background:#071022;border:1px solid rgba(255,255,255,0.03);color:#e6eef8}
+    .grid-2{display:grid;grid-template-columns:1fr 320px;gap:18px}
+
+    
+    @media (max-width:1000px){
+      .hero{grid-template-columns:1fr 320px}
+      .menu-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:720px){
+      .hero{grid-template-columns:1fr}
+      .container{padding:0 12px}
+      .menu-grid{grid-template-columns:1fr}
+      nav{display:none}
+    }
+
+    /* micro */
+    .badge{background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:999px;font-weight:600}
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">FB</div>
+      <div>
+        <div style="font-weight:700">FOODIES CRAVINGS</div>
+        <div class="small muted">Fast & tasty</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <button class="btn" id="open-cart">Cart (<span id="cart-count">0</span>)</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <h1>Crave-worthy fast food — delivered hot.</h1>
+        <p>Build your meal from freshly prepared burgers, fries, wraps and shakes. Quick pickup or delivery to your door.</p>
+        <div class="cta">
+          <button class="btn" onclick="scrollToMenu()">Order Now</button>
+          <button class="btn secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book Catering</button>
+        </div>
+
+        <div style="margin-top:18px;display:flex;gap:10px;align-items:center">
+          <div class="badge">30–40 mins</div>
+          <div class="muted" style="font-size:13px">Free fries on orders over ₹499</div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="cart" id="cart-panel">
+          <h3>Your Order</h3>
+          <div class="cart-list" id="cart-list">
+            <div class="muted">No items yet — add something from the menu.</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div class="small muted">Total</div>
+            <div style="font-weight:800" id="cart-total">₹0.00</div>
+          </div>
+          <button class="btn" id="checkout">Checkout</button>
+        </div>
+      </aside>
+    </section>
+
+    <section id="menu">
+      <h2 style="margin-bottom:8px">Menu</h2>
+      <div class="menu-grid" id="menu-grid"></div>
+    </section>
+
+    <section id="about" style="margin-top:22px">
+      <div class="grid-2">
+        <div class="card">
+          <h3>About Foodies cravings</h3>
+          <p class="muted">Foodies Cravings started as a late-night burger stall and grew into a neighbourhood favourite known for bold flavours and generous portions. We source locally where possible and cook to order.and catering available for birthday parties</p>
+          <ul class="muted" style="margin-top:12px">
+            <li>Fresh patties — no frozen shortcuts</li>
+            <li>House sauces</li>
+            <li>Vegetarian & vegan options</li>
+          </ul>
+        </div>
+
+        <div class="card form" id="contact">
+          <h3>Contact / Catering</h3>
+          <form id="contact-form" onsubmit="handleContact(event)">
+            <input type="text" id="name" placeholder="Your name" required style="margin-bottom:8px">
+            <input type="email" id="email" placeholder="Email" required style="margin-bottom:8px">
+            <input type="tel" id="phone" placeholder="Phone" style="margin-bottom:8px">
+            <textarea id="message" placeholder="Message (event date, guest count, preferences)" rows="4" style="margin-bottom:8px"></textarea>
+            <button class="btn" type="submit">Send Request</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer style="margin-top:28px;text-align:center;color:var(--muted);font-size:13px">
+      © foodies cravings — Crafted with ❤️ • Simple demo
+    </footer>
+  </main>
+
+  <script>
+    
+    const MENU = [
+      {id:1, name:'Classic Beef Burger', desc:'Grilled beef patty, cheddar, lettuce, tomato, house sauce', price:249, img:'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=60', tag:'Popular'},
+      {id:2, name:'Chicken Royale', desc:'Crispy fried chicken, mayo, pickles', price:229, img:'Screenshot 2025-11-13 232724.png', tag:'New'},
+      {id:3, name:'Veggie Delight', desc:'Grilled veg patty, avocado, sprouts', price:199, img:'Screenshot 2025-11-13 233043.png', tag:'Veg'},
+      {id:4, name:'Loaded Fries', desc:'Fries with cheese, bacon bits, jalapeños', price:149, img:'Screenshot 2025-11-13 233546.png'},
+      {id:5, name:'Chicken Wrap', desc:'Sliced chicken, lettuce, tzatziki', price:179, img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=60'},
+      {id:6, name:'Chocolate Shake', desc:'Creamy milkshake with chocolate sauce', price:99, img:'Screenshot 2025-11-13 234129.png'},
+      {id:7, name:'Pepperoni Pizza', desc:'12-inch pizza topped with mozzarella & pepperoni', price:349, img:'Screenshot 2025-11-13 234508.png', tag:'Hot'},
+      {id:8, name:'BBQ Chicken Pizza', desc:'Barbecue sauce, chicken chunks, onion, cheese', price:369, img:'Screenshot 2025-11-13 235300.png'},
+      {id:9, name:'Spicy Arrabbiata Pasta', desc:'Penne in tangy tomato sauce & chili flakes', price:239, img:'Screenshot 2025-11-13 235616.png'},
+   {id:10, name:'Cheesy Nachos', desc:'Corn chips topped with melted cheese & salsa', price:139, img:'Screenshot 2025-11-13 235937.png'},
+{id:11, name:'Brownie Sundae', desc:'Warm brownie with vanilla ice cream & fudge', price:179, img:'Screenshot 2025-11-14 001958.png'},
+  {id:12, name:'Lemon Mojito', desc:'Fresh lemon, mint, soda & ice', price:89, img:'Screenshot 2025-11-14 000710.png'},
+  {id:13, name:'Strawberry Smoothie', desc:'Refreshing smoothie with real strawberries', price:119, img:'Screenshot 2025-11-14 000910.png'},
+  {id:14, name:'Classic veg Burger', desc:'Grilled  patty, cheddar, vegies, tomato, house sauce', price:210, img:'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=60', tag:'Popular'},
+  {id:15, name:'Classic sandwitch', desc:'Grilled  patty, cheddar, vegies, tomato, house sauce', price:210, img:'Screenshot 2025-11-14 083659.png', tag:'Popular'},
+    ];
+    const menuGrid = document.getElementById('menu-grid');
+    const cartList = document.getElementById('cart-list');
+    const cartTotalEl = document.getElementById('cart-total');
+    const cartCount = document.getElementById('cart-count');
+
+    
+    const CART = {};
+
+    function renderMenu(){
+      menuGrid.innerHTML = '';
+      MENU.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" class="item-img">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div style="font-weight:700">${item.name}</div>
+              <div class="muted" style="font-size:13px;margin-top:6px">${item.desc}</div>
+            </div>
+            <div style="text-align:right">
+              <div class="price">₹${item.price}</div>
+              <div style="margin-top:8px;display:flex;gap:8px;justify-content:flex-end">
+                <button class="btn secondary" onclick="addToCart(${item.id}, -1)">-</button>
+                <button class="btn" onclick="addToCart(${item.id}, 1)">Add</button>
+              </div>
+            </div>
+          </div>
+        `;
+        menuGrid.appendChild(card);
+      })
+    }
+
+    function addToCart(id, delta=1){
+      const item = MENU.find(m => m.id === id);
+      if(!item) return;
+      CART[id] = CART[id] || {item, qty:0};
+      CART[id].qty = Math.max(0, CART[id].qty + delta);
+      if(CART[id].qty === 0) delete CART[id];
+      renderCart();
+    }
+
+    function renderCart(){
+      const keys = Object.keys(CART);
+      if(keys.length === 0){
+        cartList.innerHTML = '<div class="muted">No items yet — add something from the menu.</div>';
+        cartTotalEl.textContent = '₹0.00';
+        cartCount.textContent = '0';
+        return;
+      }
+      cartList.innerHTML = '';
+      let total = 0;
+      keys.forEach(k => {
+        const {item, qty} = CART[k];
+        const row = document.createElement('div');
+        row.className = 'cart-row';
+        row.innerHTML = `
+          <div style="display:flex;gap:10px;align-items:center">
+            <img src="${item.img}" style="width:56px;height:44px;border-radius:6px;object-fit:cover">
+            <div>
+              <div style="font-weight:700">${item.name}</div>
+              <div class="small muted">₹${item.price} x ${qty}</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end">
+            <div style="font-weight:800">₹${(item.price * qty).toFixed(2)}</div>
+            <div style="margin-top:8px;display:flex;gap:6px">
+              <button class="btn secondary" onclick="addToCart(${item.id}, -1)">-</button>
+              <button class="btn" onclick="addToCart(${item.id}, 1)">+</button>
+            </div>
+          </div>
+        `;
+        cartList.appendChild(row);
+        total += item.price * qty;
+      });
+      cartTotalEl.textContent = `₹${total.toFixed(2)}`;
+      cartCount.textContent = keys.reduce((s,k)=>s + CART[k].qty, 0);
+    }
+
+    function scrollToMenu(){
+      document.getElementById('menu').scrollIntoView({behavior:'smooth'});
+    }
+
+    document.getElementById('open-cart').addEventListener('click', ()=>{
+      document.getElementById('cart-panel').scrollIntoView({behavior:'smooth'});
+    })
+
+    document.getElementById('checkout').addEventListener('click', ()=>{
+      const keys = Object.keys(CART);
+      if(keys.length === 0){
+        alert('Your cart is empty. Add items before checkout.');
+        return;
+      }
+      // Simple demo checkout (would normally call API)
+      const order = keys.map(k => ({id:k, name:CART[k].item.name, qty:CART[k].qty}));
+      console.log('Placing order', order);
+      alert('Order placed! Thank you — this is a demo.');
+      // clear cart
+      Object.keys(CART).forEach(k=>delete CART[k]);
+      renderCart();
+    })
+
+    function handleContact(ev){
+      ev.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if(!name || !email){
+        alert('Please provide a name and email.');
+        return;
+      }
+      // In real app send to server
+      console.log('Contact request', {name,email,phone,message});
+      alert('Thanks! Your request has been sent (demo).');
+      ev.target.reset();
+    }
+
+    // initial render
+    renderMenu();
+    renderCart();
+  </script>
+</body>
+</html>
